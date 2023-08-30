@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+		http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <property name="schemaName" value="school_transport_v2"></property>
+    <property name="author=" value="db-designer"></property>
+    <changeSet id="v1-01-01" author="${author}">
+    
+ <createTable schemaName="${schemaName}" tableName="Bus">
+	<column name="BusId" type="SERIAL" autoIncrement="true" >
+        <constraints nullable="false" primaryKey="true"/>
+    </column>
+     <column name="BusNumber" type="VARCHAR(250)" />
+    
+     <column name="MfgDate" type="TIMESTAMP" />
+    
+     <column name="Capacity" type="INTEGER" />
+    
+     <column name="RegistrationNumber" type="VARCHAR(250)" />
+    
+     <column name="Model" type="VARCHAR(250)" />
+    
+     <column name="IsCameraFitted" type="BOOLEAN" />
+    
+ 	
+</createTable>
+ <createTable schemaName="${schemaName}" tableName="Trip">
+	<column name="TripId" type="BIGINT" autoIncrement="true" >
+        <constraints nullable="false" primaryKey="true"/>
+    </column>
+     <column name="StartTime" type="TIMESTAMP" />
+    
+     <column name="EndTime" type="TIMESTAMP" />
+    
+ 	
+</createTable>
+ <createTable schemaName="${schemaName}" tableName="Driver">
+	<column name="DriverId" type="SERIAL" autoIncrement="true" >
+        <constraints nullable="false" primaryKey="true"/>
+    </column>
+     <column name="Name" type="VARCHAR(250)" />
+    
+     <column name="LicenseNumber" type="VARCHAR(250)" />
+    
+     <column name="Age" type="INTEGER" />
+    
+     <column name="MobileNumber" type="VARCHAR(250)" />
+    
+     <column name="Gender" type="VARCHAR(250)" />
+    
+ 	
+</createTable>
+ <createTable schemaName="${schemaName}" tableName="Route">
+	<column name="RouteId" type="SERIAL" autoIncrement="true" >
+        <constraints nullable="false" primaryKey="true"/>
+    </column>
+     <column name="RouteName" type="VARCHAR(250)" />
+    
+     <column name="From" type="VARCHAR(250)" />
+    
+     <column name="To" type="VARCHAR(250)" />
+    
+ 	
+</createTable>
+	
+  <createTable schemaName="${schemaName}" tableName="BusTrips">
+	<column name="Id" type="SERIAL" autoIncrement="true">
+		<constraints primaryKey="true" nullable="false"/>
+	</column>
+	<column name="BusId" type="INTEGER" />
+	<column name="TripId" type="BIGINT" />
+</createTable>
+
+ 
+	<addForeignKeyConstraint baseTableName="BusTrips" baseTableSchemaName="${schemaName}"  baseColumnNames="BusId" constraintName="Trip_BusId_fk"
+	                                  referencedTableName="Bus" referencedTableSchemaName="${schemaName}" referencedColumnNames="BusId"/>
+	                                  
+	<addForeignKeyConstraint baseTableName="BusTrips" baseTableSchemaName="${schemaName}"  baseColumnNames="TripId" constraintName="Trip_TripId_fk"
+	                                  referencedTableName="Trip" referencedTableSchemaName="${schemaName}" referencedColumnNames="TripId"/>
+ 
+	
+ 
+	<addColumn tableName="Bus" schemaName="${schemaName}">
+	    <column name="BusDriver" type="INTEGER"/>
+	</addColumn>
+	<addForeignKeyConstraint baseTableName="Bus" baseColumnNames="BusDriver" baseTableSchemaName="${schemaName}" constraintName="Bus_Driver_fk" referencedTableName="Driver"
+	                                 referencedColumnNames="DriverId" referencedTableSchemaName="${schemaName}"/>
+ 
+
+ 
+	<addColumn tableName="Trip" schemaName="${schemaName}">
+	    <column name="TripRoute" type="INTEGER"/>
+	</addColumn>
+	<addForeignKeyConstraint baseTableName="Trip" baseColumnNames="TripRoute" baseTableSchemaName="${schemaName}" constraintName="Trip_Route_fk" referencedTableName="Route"
+	                                 referencedColumnNames="RouteId" referencedTableSchemaName="${schemaName}"/>
+ 
+
+ 
+ 
+	    </changeSet>
+</databaseChangeLog>
